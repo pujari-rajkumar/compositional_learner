@@ -1,0 +1,4 @@
+#Ignore __pycache__
+
+./compositional_learner/__pycache__/*
+
