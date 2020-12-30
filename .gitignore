@@ -4,4 +4,5 @@ compositional_learner/__pycache__/*
 #Ignore checkpoint files
 compositional_learner/.ipynb_checkpoints/*
 
-
+#Ignore data files
+data/*
