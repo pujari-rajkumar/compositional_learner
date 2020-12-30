@@ -13,7 +13,7 @@ import unidecode
 from data_collection_utils import download_page, split_sents
                         
 #Download senate and house data
-fpath = '../data/wiki_data/'
+fpath = './data/wiki_data/'
 
 if not os.path.exists(fpath):
     os.mkdir(fpath)

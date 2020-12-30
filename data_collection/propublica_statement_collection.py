@@ -14,7 +14,7 @@ from data_collection_utils import download_page
 # In[2]:
 
 
-fpath = '../data/pro_publica/'
+fpath = './data/pro_publica/'
 if not os.path.exists(fpath):
     os.mkdir(fpath)
 

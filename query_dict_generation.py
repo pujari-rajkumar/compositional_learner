@@ -73,7 +73,7 @@ for wlink in entity_name_dict:
 # In[8]:
 
 
-print(len(queries))
+print(len(queries), 'queries generated.')
 
 
 # In[10]:

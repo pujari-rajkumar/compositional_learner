@@ -6,3 +6,6 @@ compositional_learner/.ipynb_checkpoints/*
 
 #Ignore data files
 data/*
+
+#Ignore stanford-corenlp
+stanford-corenlp/*
