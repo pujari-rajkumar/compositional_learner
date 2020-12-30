@@ -1,0 +1,16 @@
+#Ignore __pycache__
+compositional_learner/__pycache__/*
+query_handling/__pycache__/*
+compositional_learner/transformer/__pycache__/*
+data_collection/__pycache__/*
+
+#Ignore checkpoint files
+compositional_learner/.ipynb_checkpoints/*
+
+#Ignore data files
+data/*
+
+#Ignore stanford-corenlp
+stanford-corenlp/*
+
+
