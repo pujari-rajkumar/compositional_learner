@@ -1,10 +1,7 @@
-#Needs modifications
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
-from transformers import BertModel
 
 from compositional_learner.graph_attention_network import GraphAttentionNetwork
 
@@ -17,11 +14,7 @@ class Composer(nn.Module):
         super(Composer, self).__init__()
 
         self.args = args
-        self.composer = GraphAttentionNetwork(args.d_node, args.d_hidden, args.n_heads, args.d_k, args.d_v, args.n_layers, args.dropout)
-        if args.pretrained:
-            pass
-            #Load pretrained weights
-        
+        self.composer = GraphAttentionNetwork(args.d_encoder, args.d_hidden, args.n_heads, args.d_k, args.d_v, args.n_layers, args.dropout)
            
     def forward(self, nodes, adj, get_attn=False):
         '''
@@ -42,4 +35,4 @@ class Composer(nn.Module):
         if get_attn:
             return ctx_node_embs, summary_emb, node_attn
 
-        return ctx_node_embs, summary_emb 
+        return ctx_node_embs, summary_emb

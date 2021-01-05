@@ -12,7 +12,7 @@ import pickle
 # In[4]:
 
 
-with open('./data/wiki_ann_dict.pkl', 'rb') as infile:
+with open('./data/composite_learner_data/wiki_ann_dict.pkl', 'rb') as infile:
     wiki_ann_dict = pickle.load(infile)
 
 

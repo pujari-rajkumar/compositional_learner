@@ -46,7 +46,7 @@ from utils import load_data_batch, batchify_data
 # In[ ]:
 
 
-fpath = '/homes/rpujari/scratch/composite_learner_data/'
+fpath = './data/composite_learner_data/'
 
 
 # In[ ]:
@@ -193,9 +193,6 @@ else:
     args.init_linear = True
 torch.manual_seed(4056)
 link_predictor = LinkPredictor(args)
-# if already_done == 0:
-#     link_predictor.encoder.load_state_dict(encoder_state_dict)
-#     link_predictor.composer.load_state_dict(composer_state_dict)
 for query_batch in range(already_done, query_batches):
     random.seed(4056)
     qdb_path = fpath + 'data_examples/query_dicts-' + str(query_batch) + '.pkl'
