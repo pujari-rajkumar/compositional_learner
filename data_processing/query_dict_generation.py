@@ -1,22 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
+#@author: Rajkumar Pujari
 
 import pickle
 import random
 from datetime import datetime
 
 
-# In[3]:
-
-
 from query_handling import query_processing
 from query_handling import data_splitting_utils
-
-
-# In[4]:
 
 
 def generate_lp_data(queries, seed=4056):
@@ -36,21 +29,12 @@ def generate_lp_data(queries, seed=4056):
     return query_dicts, qd_splits
 
 
-# In[5]:
-
-
 with open('./data/composite_learner_data/entity_name_dict.pkl', 'rb') as infile:
     entity_name_dict = pickle.load(infile)
 
 
-# In[6]:
-
-
 import os
 topics = os.listdir('./data/all_sides/news/')
-
-
-# In[7]:
 
 
 n = 0
@@ -70,20 +54,9 @@ for wlink in entity_name_dict:
             queries.append(q)
 
 
-# In[8]:
-
-
-print(len(queries), 'queries generated.')
-
-
-# In[10]:
-
 
 with open('./data/composite_learner_data/data_examples/queries.pkl', 'wb') as outfile:
     pickle.dump(queries, outfile)
-
-
-# In[11]:
 
 
 bsz = 24
@@ -107,10 +80,4 @@ while b < len(queries):
         print('Batch ', bnum, 'done - ', t2-t1, '\n')
     bnum += 1
     b = e
-
-
-# In[ ]:
-
-
-
 
