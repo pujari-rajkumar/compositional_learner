@@ -179,7 +179,7 @@ for query_batch in range(already_done, query_batches):
     print('Batch', query_batch, 'Train -', sum(train[1]) / len(train[1]), len(train[1]), file=log, flush=True)
     print('Batch', query_batch, 'Dev -', sum(dev[1]) / len(dev[1]), len(dev[1]), file=log, flush=True)
     print('Batch', query_batch, 'Test -', sum(test[1]) / len(test[1]), len(test[1]), file=log, flush=True)
-    with torch.cuda.device(1):
+    with torch.cuda.device(0):
         torch.manual_seed(4056)
         link_predictor.cuda()
         link_predictor.train_model(train, dev, log=log)
