@@ -3,9 +3,6 @@
 
 #@author: Rajkumar Pujari
 
-# In[1]:
-
-
 import pickle
 import numpy as np
 import random
@@ -15,8 +12,6 @@ import csv
 from sklearn.metrics.pairwise import cosine_similarity as cos_sim
 import matplotlib.pyplot as plt
 
-# In[2]:
-
 
 import torch
 import torch.nn as nn
@@ -24,13 +19,9 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 
-# In[5]:
-
 
 fpath = './data/evaluation_data/'
 log = open(fpath + 'grade_pred_log.txt', 'w')
-
-# In[6]:
 
 
 pol_ents = set()
@@ -39,8 +30,6 @@ with open(fpath + 'queries.pkl', 'rb') as infile:
     for query in queries:
         pol_ents.add(query[0][0])
 
-
-# In[9]:
 
 
 with open(fpath + 'entity_issue_bert.pkl', 'rb') as infile:
@@ -52,8 +41,6 @@ with open(fpath + 'entity_issue_encoder.pkl', 'rb') as infile:
 with open(fpath + 'entity_issue_model.pkl', 'rb') as infile:
     ent_embs_model = pickle.load(infile)
 
-
-# In[10]:
 
 
 class GradePredictor(nn.Module):
@@ -111,9 +98,6 @@ class GradePredictor(nn.Module):
 
 # # NRA Grade Experiments
 
-# In[115]:
-
-
 csv_file = csv.reader(open(fpath + 'nra-grades.csv', 'r'))
 c = 0
 grade_pol_ents = set()
@@ -129,21 +113,13 @@ for row in csv_file:
 print(c, len(grade_pol_ents), len(pol_ents), file=log, flush=True)
 
 
-# In[116]:
-
-
 pos_sent = 'I strongly support National Rifle Association (NRA)'
 neg_sent = 'I vehemently oppose National Rifle Association (NRA)'
-
-
-# In[117]:
 
 
 with open(fpath + 'nra_sents.pkl', 'rb') as infile:
     nra_sent_embs = pickle.load(infile)
 
-
-# In[118]:
 
 
 res_file = open(fpath + 'nra_grade_res_all.txt', 'w')
@@ -168,12 +144,8 @@ for ent in nra_grades:
         e1_model = (n1_model_emb + n2_model_emb).reshape(1, -1)
         cs_scores_model = cos_sim(e1_model, nra_sent_embs)
         
-        print(np.argmax(cs_scores_bert.reshape(2,), axis=0), np.argmax(cs_scores_bl.reshape(2,), axis=0),              np.argmax(cs_scores_encoder.reshape(2,), axis=0), np.argmax(cs_scores_model.reshape(2,), axis=0),              nra_grades[ent], file=res_file, flush=True)
-		
+        print(np.argmax(cs_scores_bert.reshape(2,), axis=0), np.argmax(cs_scores_bl.reshape(2,), axis=0),              np.argmax(cs_scores_encoder.reshape(2,), axis=0), np.argmax(cs_scores_model.reshape(2,), axis=0), nra_grades[ent], file=res_file, flush=True)
 res_file.close()
-
-
-# In[119]:
 
 
 grade_2_idx = {
@@ -193,9 +165,6 @@ grade_2_idx = {
     'B-': 6,
     'A+': 0
 }
-
-
-# In[120]:
 
 
 c_bert, c_bl, c_encoder, c_model, t, w = 0, 0, 0, 0, 0, 0
@@ -265,9 +234,6 @@ print('BERT:', c_bert, 'Adap:', c_bl, 'Enc:', c_encoder, 'Model:', c_model, 'Tot
 print('A/F_BERT:', af_c_bert, 'A/F_Adap:', af_c_bl, 'A/F_Enc:', af_c_encoder, 'A/F_Model:', af_c_model, 'A/F_Total:', af_t, file=log, flush=True)
 
 
-# In[121]:
-
-
 def get_nra_label(ent):
     grade_nums = [gt_2_idx[g] for g in nra_grades[ent]]
     cd = {}
@@ -285,8 +251,6 @@ def get_nra_label(ent):
     else:
         return - 1
 
-
-# In[122]:
 
 
 gt_2_idx = {
@@ -308,8 +272,6 @@ gt_2_idx = {
 }
 
 
-# In[123]:
-
 
 def get_model_tensors(data):
     data_x = []
@@ -324,8 +286,6 @@ def get_model_tensors(data):
     data_y = torch.from_numpy(np.array(data_y))
     return data_x, data_y
 
-
-# In[124]:
 
 print('NRA Grade Prediction - BERT: ', file=log, flush=True)
 data = []
@@ -377,8 +337,6 @@ for seed in [5, 7, 11, 13, 17]:
         bert_val_res[num_tr].append(torch.mean(torch.cat(val_accs, dim=0)).numpy()*100)
 
 
-# In[125]:
-
 print('NRA Grade Prediction - BERT Adaptation: ', file=log, flush=True)
 data = []
 for ent in ent_embs_bl['guns']:
@@ -428,8 +386,6 @@ for seed in [5, 7, 11, 13, 17]:
         bl_test_res[num_tr].append(torch.mean(torch.cat(test_accs, dim=0)).numpy()*100)
         bl_val_res[num_tr].append(torch.mean(torch.cat(val_accs, dim=0)).numpy()*100)
 
-
-# In[126]:
 
 print('NRA Grade Prediction - Encoder: ', file=log, flush=True)
 data = []
@@ -481,8 +437,6 @@ for seed in [5, 7, 11, 13, 17]:
         encoder_val_res[num_tr].append(torch.mean(torch.cat(val_accs, dim=0)).numpy()*100)
 
 
-# In[129]:
-
 print('NRA Grade Prediction - Compositional Reader: ', file=log, flush=True)
 data = []
 for ent in ent_embs_model['guns']:
@@ -533,21 +487,14 @@ for seed in [5, 7, 11, 13, 17]:
         m_val_res[num_tr].append(torch.mean(torch.cat(val_accs, dim=0)).numpy()*100)
 
 
-# In[130]:
-
 print('NRA Grade Prediction Validation Results: Num training folds, BERT_acc, BERT_std, BERT_Adap_acc, BERT_Adap_std, Encoder_acc, Encoder_std, Comp_Reader_acc, Comp_Reader_std', file=log, flush=True) 
 for nr in bl_val_res:
     print(nr, ',', round(np.mean(bert_val_res[nr]), 2), ',', round(np.std(bert_val_res[nr]), 2),          ',', round(np.mean(bl_val_res[nr]), 2), ',', round(np.std(bl_val_res[nr]), 2),          ',', round(np.mean(encoder_val_res[nr]), 2), ',', round(np.std(encoder_val_res[nr]), 2),          ',', round(np.mean(m_val_res[nr]), 2), ',', round(np.std(m_val_res[nr]), 2), file=log, flush=True)
 
 
-# In[131]:
-
 print('NRA Grade Prediction Test Results: Num training folds, BERT_acc, BERT_std, BERT_Adap_acc, BERT_Adap_std, Encoder_acc, Encoder_std, Comp_Reader_acc, Comp_Reader_std', file=log, flush=True) 
 for nr in bl_test_res:
     print(nr, ',', round(np.mean(bert_test_res[nr]), 2), ',', round(np.std(bert_test_res[nr]), 2),          ',', round(np.mean(bl_test_res[nr]), 2), ',', round(np.std(bl_test_res[nr]), 2),          ',', round(np.mean(encoder_test_res[nr]), 2), ',', round(np.std(encoder_test_res[nr]), 2),          ',', round(np.mean(m_test_res[nr]), 2), ',', round(np.std(m_test_res[nr]), 2), file=log, flush=True)
-
-
-# In[159]:
 
 
 plt.style.use('classic')
@@ -582,8 +529,6 @@ print(plt_name, file=log, flush=True)
 #plt.show()
 plt.close()
 
-
-# In[133]:
 
 
 plt.style.use('classic')
@@ -620,8 +565,6 @@ plt.close()
 
 # # LCV Score Experiments
 
-# In[190]:
-
 
 csv_file = csv.reader(open(fpath + '2019_lcv_scores.csv', 'r'))
 c = 0
@@ -639,8 +582,6 @@ for row in csv_file:
 print(c, len(grade_pol_ents), len(pol_ents), file=log, flush=True)
 
 
-# In[194]:
-
 
 num_classes = 4
 def get_lcv_label(ent):
@@ -654,8 +595,6 @@ def get_lcv_label(ent):
     elif score <= 100:
         return 3
 
-
-# In[195]:
 
 print('LCV Score Prediction - BERT: ', file=log, flush=True)
 data = []
@@ -707,8 +646,6 @@ for seed in [5, 7, 11, 13, 17]:
         bert_val_res[num_tr].append(torch.mean(torch.cat(val_accs, dim=0)).numpy()*100)
 
 
-# In[196]:
-
 print('LCV Score Prediction - BERT Adaptation: ', file=log, flush=True)
 data = []
 for ent in ent_embs_bl['environment']:
@@ -758,8 +695,6 @@ for seed in [5, 7, 11, 13, 17]:
         bl_test_res[num_tr].append(torch.mean(torch.cat(test_accs, dim=0)).numpy()*100)
         bl_val_res[num_tr].append(torch.mean(torch.cat(val_accs, dim=0)).numpy()*100)
 
-
-# In[197]:
 
 print('LCV Score Prediction - Encoder: ', file=log, flush=True)
 data = []
@@ -811,8 +746,6 @@ for seed in [5, 7, 11, 13, 17]:
         encoder_val_res[num_tr].append(torch.mean(torch.cat(val_accs, dim=0)).numpy()*100)
 
 
-# In[198]:
-
 print('LCV Score Prediction - Compositional Reader: ', file=log, flush=True)
 data = []
 for ent in ent_embs_model['environment']:
@@ -863,21 +796,15 @@ for seed in [5, 7, 11, 13, 17]:
         m_val_res[num_tr].append(torch.mean(torch.cat(val_accs, dim=0)).numpy()*100)
 
 
-# In[199]:
-
 print('LCV Score Prediction Test Results: Num training folds, BERT_acc, BERT_std, BERT_Adap_acc, BERT_Adap_std, Encoder_acc, Encoder_std, Comp_Reader_acc, Comp_Reader_std', file=log, flush=True) 
 for nr in bl_test_res:
     print(nr, ',', round(np.mean(bert_test_res[nr]), 2), ',', round(np.std(bert_test_res[nr]), 2),          ',', round(np.mean(bl_test_res[nr]), 2), ',', round(np.std(bl_test_res[nr]), 2),          ',', round(np.mean(encoder_test_res[nr]), 2), ',', round(np.std(encoder_test_res[nr]), 2),          ',', round(np.mean(m_test_res[nr]), 2), ',', round(np.std(m_test_res[nr]), 2), file=log, flush=True)
 
 
-# In[200]:
-
 print('LCV Score Prediction Validation Results: Num training folds, BERT_acc, BERT_std, BERT_Adap_acc, BERT_Adap_std, Encoder_acc, Encoder_std, Comp_Reader_acc, Comp_Reader_std', file=log, flush=True) 
 for nr in bl_val_res:
     print(nr, ',', round(np.mean(bert_val_res[nr]), 2), ',', round(np.std(bert_val_res[nr]), 2),          ',', round(np.mean(bl_val_res[nr]), 2), ',', round(np.std(bl_val_res[nr]), 2),          ',', round(np.mean(encoder_val_res[nr]), 2), ',', round(np.std(encoder_val_res[nr]), 2),          ',', round(np.mean(m_val_res[nr]), 2), ',', round(np.std(m_val_res[nr]), 2), file=log, flush=True)
 
-
-# In[201]:
 
 
 plt.style.use('classic')
@@ -912,7 +839,6 @@ print(plt_name, file=log, flush=True)
 #plt.show()
 plt.close()
 
-# In[202]:
 
 
 plt.style.use('classic')

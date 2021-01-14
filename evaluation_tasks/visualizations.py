@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# @author: Rajkumar Pujari
 
 
 import pickle
@@ -12,14 +12,7 @@ from sklearn.metrics.pairwise import cosine_similarity as cos_sim
 import matplotlib.pyplot as plt
 
 
-
-# In[5]:
-
-
 fpath = './data/evaluation_data/'
-
-
-# In[46]:
 
 
 pol_ents = set()
@@ -31,8 +24,6 @@ with open(fpath + 'queries.pkl', 'rb') as infile:
         issues.add(query[1][0])
 print(issues)
 
-
-# In[47]:
 
 
 csv_file = csv.reader(open(fpath + 'nra-grades.csv', 'r'))
@@ -52,9 +43,6 @@ print(c, len(grade_pol_ents), len(pol_ents))
 
 
 
-# In[58]:
-
-
 with open(fpath + 'entity_issue_bert.pkl', 'rb') as infile:
     ent_embs_bert = pickle.load(infile)
 with open(fpath + 'entity_issue_bl.pkl', 'rb') as infile:
@@ -65,14 +53,9 @@ with open(fpath + 'entity_issue_model.pkl', 'rb') as infile:
     ent_embs_model = pickle.load(infile)
 
 
-# In[59]:
-
 
 from sklearn.decomposition import PCA
 pca = PCA(n_components=2)
-
-
-# In[141]:
 
 
 csv_file = csv.reader(open(fpath + 'nra-grades.csv', 'r'))
@@ -85,8 +68,6 @@ for row in csv_file:
         ent_affl[row[5]] = row[6]
     i += 1
 
-
-# In[144]:
 
 
 plt.style.use('classic')
@@ -130,7 +111,6 @@ for issue in issues:
     plt.show()
     plt.close()
 
-# In[65]:
 
 
 #Entities with represntation for all issues and also have NRA grades
@@ -139,9 +119,6 @@ for issue in issues:
     il = list(ent_embs_model[issue].keys())
     il_set = set(il)
     ent_set = ent_set & il_set
-
-
-# In[139]:
 
 
 ent_pairs = [
