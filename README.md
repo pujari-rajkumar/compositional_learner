@@ -15,8 +15,8 @@ To run evaluation tasks:
 
                                     python3.6 ./evaluation_tasks/grade_prediction.py
 
-  
-       This also runs on CPU and may take up to 30 minutes to finish. It is trains and evaluates a GradePredictor feed-forward neural network 320 times (5 random seeds * 8 training data sizes * 4 models * 2 tasks). We didn't provide the option of GPU because it doesn't take too much time to finish.
+
+	This also runs on CPU and may take up to 30 minutes to finish. It is trains and evaluates a GradePredictor feed-forward neural network 320 times (5 random seeds * 8 training data sizes * 4 models * 2 tasks). We didn't provide the option of GPU because it doesn't take too much time to finish.
 
 
 3. Both the scripts will generate plots as .png  images in the ./data/evaluation_data/ folder. grade_prediction.py generates training output in ./data/evaluation_data/grade_pred_log.txt.
