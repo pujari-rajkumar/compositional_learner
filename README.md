@@ -1,8 +1,28 @@
-This is the code repository for the paper: Understanding Politics via Contextualized Discourse Processing
+This is the code repository for the paper, Understanding Politics via Contextualized Discourse Processing: https://arxiv.org/abs/2012.15784
 
 The repository is only partially full yet. The first version will be ready by 01/20/2021. Sorry for the delay.
 
+Download the required data from here: https://drive.google.com/file/d/1Y-BTF34tnS8FhE0dGViY9MYN7nNrb50N/view?usp=sharing
+
+Follow the steps sequentially to reproduce results from the paper. This repository consists of scripts related to data collection, data processing, learnings tasks and evaluation tasks. If you are only interested in reproducing evaluation results, you don't need to train the entire model again as trained model parameters are provided in the downloadable data link. Skip forward to evaluation tasks section below.
+
+If you are interested in training compositional reader model on learning tasks as described in the paper, you don't need to run data collection scripts. Data required to train the model as described in the paper is provided in the link above. Start from the data pre-processing step below.
+
+To collect data using collection scripts:
+<TO DO>
+
+
+To pre-process data for learning tasks:
+<TO DO>
+
+
+To train the compositional reader model on learning tasks:
+<TO DO>
+
+
 To run evaluation tasks:
+<TO DO>
+
 
 1. To generate visualizations for 'politicians on all issues' (Fig. 5 and Appendix Fig.s 4-13) and 'comaprison of politicians stances on issues' (Fig. 4), you may run:
 
