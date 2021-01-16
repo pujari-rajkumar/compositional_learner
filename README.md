@@ -23,8 +23,6 @@ TO DO
 
 
 To run evaluation tasks:
-TO DO
-
 
 1. To generate visualizations for 'politicians on all issues' (Fig. 5 and Appendix Fig.s 4-13) and 'comaprison of politicians stances on issues' (Fig. 4), you may run:
 
