@@ -3,6 +3,7 @@ This is the code repository for the paper, Understanding Politics via Contextual
 The repository is only partially full yet. The first version will be ready by 01/20/2021. Sorry for the delay.
 
 Download the required data from here: https://drive.google.com/file/d/1Y-BTF34tnS8FhE0dGViY9MYN7nNrb50N/view?usp=sharing
+
 Place the contents in a folder named data/ in the main repository. Make sure that there isn't a nested folder named data/ inside the data/ folder after extraction. Folders inside data/ should be composite_learner_data/, evaluation_data/, etc,.
 
 Follow the steps sequentially to reproduce results from the paper. This repository consists of scripts related to data collection, data processing, learnings tasks and evaluation tasks. If you are only interested in reproducing evaluation results, you don't need to train the entire model again as trained model parameters are provided in the downloadable data link. Skip forward to evaluation tasks section below.
