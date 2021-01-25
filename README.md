@@ -4,7 +4,7 @@ The repository is only partially full yet. The first version will be ready by 01
 
 Download the required data from here: https://drive.google.com/file/d/1Y-BTF34tnS8FhE0dGViY9MYN7nNrb50N/view?usp=sharing
 
-Place the contents in a folder named data/ in the main repository. Make sure that there isn't a nested folder named data/ inside the data/ folder after extraction. Folders inside data/ should be composite_learner_data/, evaluation_data/, etc,.
+Extract the zipped archive and place data/ folder in the main directory alongside compositional_reader/, data_processing/ etc,. Make sure that there isn't a nested folder named data/ inside the data/ folder after extraction. Folders inside data/ should be composite_learner_data/, evaluation_data/, etc,.
 
 Follow the steps sequentially to reproduce results from the paper. This repository consists of scripts related to data collection, data processing, learnings tasks and evaluation tasks. If you are only interested in reproducing evaluation results, you don't need to train the entire model again as trained model parameters are provided in the downloadable data link. Skip forward to evaluation tasks section below.
 
@@ -15,7 +15,11 @@ TO DO
 
 
 To pre-process data for learning tasks:
-TO DO
+1. Download staford-corenlp from here: https://stanfordnlp.github.io/corenlp-docs-dev/download.html
+2. Extract and place the contents in the main directory in a folder named staford-corenlp/
+3. Run the following command in this order:
+        python3.6 data_processing/text_processing.py
+        python3.6 
 
 
 To train the compositional reader model on learning tasks:

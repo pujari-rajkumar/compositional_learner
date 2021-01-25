@@ -19,7 +19,6 @@ import json
 
 
 def process_article(tpath):
-    global proc_dict
     try:
         ppath = tpath[:-3] + 'parse'
         if not os.path.exists(ppath):
@@ -30,12 +29,18 @@ def process_article(tpath):
             tcoref = []
             for tpara in tsplit:
                 if tpara.strip() != '':
-                    tparas.append(tpara.strip())
-                    ptoks = json.loads(stanford_nlp.annotate(tpara.strip(), properties={'annotators': 'ssplit,pos,coref,ner', 'outputFormat': 'json'}))
-                    tsents.append(ptoks['sentences'])
-                    tcoref.append(ptoks['corefs'])
-            tparse = {'text': tparas, 'tokens': tsents, 'coref': tcoref}
-            json.dump(tparse, open(ppath, 'w'))
+                    try:
+                        ptoks = json.loads(stanford_nlp.annotate(tpara.strip(), properties={'annotators': 'ssplit,pos,coref,ner', 'outputFormat': 'json'}))
+                        tparas.append(tpara.strip())
+                        tsents.append(ptoks['sentences'])
+                        tcoref.append(ptoks['corefs'])
+                    except:
+                        continue
+            if len(tparas) > 0:
+                tparse = {'text': tparas, 'tokens': tsents, 'coref': tcoref}
+                json.dump(tparse, open(ppath, 'w'))
+            else:
+                print('Skipping', tpath, 'stanfordcorenlp error')
     except:
         print(sys.exc_info()[0], tpath)
 
@@ -70,7 +75,6 @@ def process_all_articles(tpaths, batch_size=10):
 
 
 stanford_nlp = StanfordCoreNLP('./stanford-corenlp/')
-
 
 # In[ ]:
 
