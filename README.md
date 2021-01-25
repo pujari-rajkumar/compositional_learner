@@ -6,9 +6,9 @@ Download the required data from here: https://drive.google.com/file/d/1Y-BTF34tn
 
 Extract the zipped archive and place data/ folder in the main directory alongside compositional_reader/, data_processing/ etc,. Make sure that there isn't a nested folder named data/ inside the data/ folder after extraction. Folders inside data/ should be composite_learner_data/, evaluation_data/ and so on.
 
-Follow the steps sequentially to reproduce results from the paper. This repository consists of scripts related to data collection, data processing, learnings tasks and evaluation tasks. If you are only interested in reproducing evaluation results, you don't need to train the entire model again as trained model parameters are provided in the downloadable data link. Skip forward to evaluation tasks section below.
+Follow the steps sequentially to reproduce results from the paper. This repository consists of scripts related to data collection, data processing, learnings tasks and evaluation tasks. If you are only interested in reproducing evaluation results, you don't need to train the entire model again. Trained model parameters are provided in the downloadable data link. Skip forward to evaluation tasks section below.
 
-If you are interested in training compositional reader model on learning tasks as described in the paper, you don't need to run data collection scripts. Data required to train the model as described in the paper is provided in the link above. Start from the data pre-processing step below.
+If you are interested in training compositional reader model on learning tasks as described in the paper, you don't need to run data collection scripts. Data required to train the model, as described in the paper, is provided in the downloadable data link. Skip forward to the data pre-processing section below.
 
 To collect data using collection scripts:
 TO DO
@@ -23,7 +23,7 @@ To pre-process data for learning tasks:
         python data_processing/document_bert_embedding_computation.py
         python data_processing/query_dict_generation.py
 
-P.S: Data pre-processing takes a long time (~5 hours)
+P.S: Don't run them in parallel as the later steps require the output of the earlier steps. Data pre-processing takes a long time (~5 hours)
 
 
 To train the compositional reader model on learning tasks:
