@@ -21,7 +21,7 @@ To pre-process data for learning tasks:
 
         python data_processing/text_processing.py
         python data_processing/document_bert_embedding_computation.py
-	python data_processing/query_dict_generation.py
+        python data_processing/query_dict_generation.py
 
 P.S: Data pre-processing takes a long time (~5 hours)
 
