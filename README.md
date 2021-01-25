@@ -17,9 +17,13 @@ TO DO
 To pre-process data for learning tasks:
 1. Download staford-corenlp from here: https://stanfordnlp.github.io/corenlp-docs-dev/download.html
 2. Extract and place the contents in the main directory in a folder named staford-corenlp/
-3. Run the following command in this order:
-        python3.6 data_processing/text_processing.py
-        python3.6 
+3. Run the following commands in this order:
+
+        python data_processing/text_processing.py
+        python data_processing/document_bert_embedding_computation.py
+	python data_processing/query_dict_generation.py
+
+P.S: Data pre-processing takes a long time (~5 hours)
 
 
 To train the compositional reader model on learning tasks:
@@ -30,14 +34,14 @@ To run evaluation tasks:
 
 1. To generate visualizations for 'politicians on all issues' (Fig. 5 and Appendix Fig.s 4-13) and 'comaprison of politicians stances on issues' (Fig. 4), you may run:
 
-                                    python3.6 ./evaluation_tasks/visualizations.py
+                                    python ./evaluation_tasks/visualizations.py
 
 	It runs on CPU and will take 2-5 secs to finish
 
 
 2. To generate results of 'NRA Grades Paraphrase Task' (Tab. 4), 'NRA Grade Prediction Task' (Tab 5., Fig. 4 and Appendix Fig. 2), LCV Score Prediction Task (Appendix Tab. 1, Fig.s 1 & 2), you may run:
 
-                                    python3.6 ./evaluation_tasks/grade_prediction.py
+                                    python ./evaluation_tasks/grade_prediction.py
 
 
 	This also runs on CPU and may take up to 30 minutes to finish. It is trains and evaluates a GradePredictor feed-forward neural network 320 times (5 random seeds * 8 training data sizes * 4 models * 2 tasks). We didn't provide the option of GPU because it doesn't take too much time to finish.
