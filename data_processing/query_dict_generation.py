@@ -7,7 +7,8 @@ import pickle
 import random
 from datetime import datetime
 
-
+import sys
+sys.path.append('./')
 from query_handling import query_processing
 from query_handling import data_splitting_utils
 

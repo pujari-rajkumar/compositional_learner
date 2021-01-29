@@ -18,7 +18,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-
+import sys
+sys.path.append('./')
 from query_handling import data_splitting_utils
 from query_handling import graph_generation
 

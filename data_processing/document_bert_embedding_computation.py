@@ -17,6 +17,8 @@ import re
 from nltk.corpus import stopwords
 
 
+cuda_device = 0
+
 def get_popular_entity(doc_sref, eset):
     doc_ents = {}
     max_freq = -1
@@ -72,10 +74,9 @@ def concat_doc_tensors(d_tensors):
 
 def create_bert_emb(all_sents):
     if len(all_sents) > 0:
-        with torch.cuda.device(0):
+        with torch.cuda.device(cuda_device):
             all_toks = tokenizer.batch_encode_plus(all_sents, pad_to_max_length=True,                                                   add_special_tokens=True, is_pretokenized=True)
-            torch.cuda.empty_cache()
-            tok_tensor = torch.tensor(all_toks['input_ids']).to('cuda')
+            tok_tensor = torch.tensor(all_toks['input_ids']).to('cuda')[:, :512]
             with torch.no_grad():
                 all_doc_tensor, _ = model(tok_tensor)
                 all_doc_tensor.to('cpu')
@@ -84,10 +85,6 @@ def create_bert_emb(all_sents):
             for i in range(all_doc_tensor.size(0)):
                 slen = torch.sum(all_attn_mask[i, :])
                 ret_tensor[i, :] = torch.mean(all_doc_tensor[i, :slen, :], dim=0)
-            del tok_tensor
-            del all_doc_tensor
-            del all_attn_mask
-            torch.cuda.empty_cache()
             return ret_tensor
 
 
@@ -157,7 +154,7 @@ fpath = './data/composite_learner_data/'
 
 tokenizer_class = BertTokenizer
 tokenizer = tokenizer_class.from_pretrained('bert-base-uncased')
-with torch.cuda.device(0):
+with torch.cuda.device(cuda_device):
     with torch.no_grad():
         model = BertModel.from_pretrained('bert-base-uncased',                                          output_hidden_states=False,                                          output_attentions=False)
         model.eval()
@@ -182,17 +179,19 @@ for ent in formatted_tweet_parses:
 sorted_tp_list = sorted(tweet_parse_list, key=lambda x:x[1])
 sorted_tps = [x[0] for x in sorted_tp_list]
 
-tweet_popular_entities = [get_popular_entity(ft_sref_dict[i], ft_esets) for i in range(len(sorted_tps))]
-
-
 t1 = datetime.now()
-dembs = get_bert_embs(sorted_tps, is_parses=True, batch_size=100, max_sent_len=150)
-with open(fpath + 'tweet_doc_tensors.pkl', 'wb') as outfile:
-    pickle.dump(dembs, outfile)
 
-dembs = get_bert_embs(sorted_tps, is_parses=True, batch_size=100, max_sent_len=150, popular_entities=tweet_popular_entities)
-with open(fpath + 'tweet_doc_tensors_poprem.pkl', 'wb') as outfile:
-    pickle.dump((dembs, tweet_popular_entities), outfile)
+if not os.path.exists(fpath + 'tweet_doc_tensors.pkl'):
+    dembs = get_bert_embs(sorted_tps, is_parses=True, batch_size=100, max_sent_len=150)
+    with open(fpath + 'tweet_doc_tensors.pkl', 'wb') as outfile:
+        pickle.dump(dembs, outfile)
+
+if not os.path.exists(fpath + 'tweet_doc_tensors_poprem.pkl'):
+    tweet_popular_entities = [get_popular_entity(ft_sref_dict[i], ft_esets) for i in range(len(sorted_tps))]
+    dembs = get_bert_embs(sorted_tps, is_parses=True, batch_size=100, max_sent_len=150, popular_entities=tweet_popular_entities)
+    with open(fpath + 'tweet_doc_tensors_poprem.pkl', 'wb') as outfile:
+        pickle.dump((dembs, tweet_popular_entities), outfile)
+
 t2 = datetime.now()
 print('Tweet embeddings computed. Time taken: ', t2 - t1)
 
@@ -206,35 +205,21 @@ with open(fpath + 'quote_ent_mentions.pkl', 'rb') as infile:
     quote_ppaths, q_eset, q_sref_dict = pickle.load(infile)
 
 
+quote_ppaths_rel = []
+for ppath in quote_ppaths:
+    ppath = ppath.replace('/homes/rpujari/scratch/', './data/')
+    quote_ppaths_rel.append(ppath)
+
+print(quote_ppaths_rel[0])
 t1 = datetime.now()
-dembs = get_bert_embs(quote_ppaths, is_parses=False, batch_size=100, max_sent_len=150)
-with open(fpath + 'quote_doc_tensors.pkl', 'wb') as outfile:
-    pickle.dump(dembs, outfile)
+
+if not os.path.exists(fpath + 'quote_doc_tensors.pkl'):
+    dembs = get_bert_embs(quote_ppaths_rel, is_parses=False, batch_size=100, max_sent_len=150)
+    with open(fpath + 'quote_doc_tensors.pkl', 'wb') as outfile:
+        pickle.dump(dembs, outfile)
+
 t2 = datetime.now()
 print('Quote embeddings computed. Time taken: ', t2 - t1)
-
-
-
-# # Statement embedding computation
-
-with open(fpath + 'formatted_statement_data.pkl', 'rb') as infile:
-    formatted_statement_data = pickle.load(infile)
-with open(fpath + 'stat_ent_mentions.pkl', 'rb') as infile:
-    stat_ppaths, p_eset, p_sref_dict = pickle.load(infile)
-
-
-stat_popular_entities = [get_popular_entity(p_sref_dict[i], p_eset) for i in range(len(stat_ppaths))]
-
-t1 = datetime.now()
-dembs = get_bert_embs(stat_ppaths, is_parses=False, batch_size=100, max_sent_len=150)
-with open(fpath + 'stat_doc_tensors.pkl', 'wb') as outfile:
-    pickle.dump(dembs, outfile)
-    
-dembs = get_bert_embs(stat_ppaths, is_parses=False, batch_size=100, max_sent_len=150, popular_entities=stat_popular_entities)
-with open(fpath + 'stat_doc_tensors_poprem.pkl', 'wb') as outfile:
-    pickle.dump((dembs, stat_popular_entities), outfile)
-t2 = datetime.now()
-print('Statement embeddings computed. Time taken: ', t2 - t1)
 
 
 
@@ -245,16 +230,26 @@ with open(fpath + 'formatted_news_data.pkl', 'rb') as infile:
 with open(fpath + 'news_ent_mentions.pkl', 'rb') as infile:
     news_ppaths, n_eset, n_sref_dict = pickle.load(infile)
 
-news_popular_entities = [get_popular_entity(n_sref_dict[i], n_eset) for i in range(len(news_ppaths))]
+news_ppaths_rel = []
+for ppath in news_ppaths:
+    ppath = ppath.replace('/homes/rpujari/scratch/', './data/')
+    news_ppaths_rel.append(ppath)
+
+print(news_ppaths_rel[0])
 
 t1 = datetime.now()
-dembs = get_bert_embs(news_ppaths, is_parses=False, batch_size=100, max_sent_len=150)
-with open(fpath + 'news_doc_tensors.pkl', 'wb') as outfile:
-    pickle.dump(dembs, outfile)
 
-dembs = get_bert_embs(news_ppaths, is_parses=False, batch_size=100, max_sent_len=150, popular_entities=news_popular_entities)
-with open(fpath + 'news_doc_tensors_poprem.pkl', 'wb') as outfile:
-    pickle.dump((dembs, news_popular_entities), outfile)
+if not os.path.exists(fpath + 'news_doc_tensors.pkl'):
+    dembs = get_bert_embs(news_ppaths_rel, is_parses=False, batch_size=100, max_sent_len=150)
+    with open(fpath + 'news_doc_tensors.pkl', 'wb') as outfile:
+        pickle.dump(dembs, outfile)
+
+if not os.path.exists(fpath + 'news_doc_tensors_poprem.pkl'):
+    news_popular_entities = [get_popular_entity(n_sref_dict[i], n_eset) for i in range(len(news_ppaths))]
+    dembs = get_bert_embs(news_ppaths_rel, is_parses=False, batch_size=100, max_sent_len=150, popular_entities=news_popular_entities)
+    with open(fpath + 'news_doc_tensors_poprem.pkl', 'wb') as outfile:
+        pickle.dump((dembs, news_popular_entities), outfile)
+
 t2 = datetime.now()
 print('News embeddings computed. Time taken: ', t2 - t1)
 
@@ -265,10 +260,20 @@ print('News embeddings computed. Time taken: ', t2 - t1)
 with open(fpath + 'wiki_ent_mentions.pkl', 'rb') as infile:
     wiki_ppaths, w_eset, w_sref_dict = pickle.load(infile)
 
+wiki_ppaths_rel = []
+for ppath in wiki_ppaths:
+    ppath = ppath.replace('/homes/rpujari/scratch/', './data/')
+    wiki_ppaths_rel.append(ppath)
+
+print(wiki_ppaths_rel[0])
+
 t1 = datetime.now()
-dembs = get_bert_embs(wiki_ppaths, is_parses=False, batch_size=100, max_sent_len=150)
-with open(fpath + 'wiki_doc_tensors.pkl', 'wb') as outfile:
-    pickle.dump(dembs, outfile)
+
+if not os.path.exists(fpath + 'wiki_doc_tensors.pkl'):
+    dembs = get_bert_embs(wiki_ppaths_rel, is_parses=False, batch_size=100, max_sent_len=150)
+    with open(fpath + 'wiki_doc_tensors.pkl', 'wb') as outfile:
+        pickle.dump(dembs, outfile)
+
 t2 = datetime.now()
 print('Wiki embeddings computed. Time taken: ', t2 - t1)
 
@@ -279,13 +284,51 @@ print('Wiki embeddings computed. Time taken: ', t2 - t1)
 with open(fpath + 'background_ent_mentions.pkl', 'rb') as infile:
     background_parses, bg_eset, bg_sref_dict = pickle.load(infile)
 
+background_parses_rel = []
+for ppath in background_parses:
+    ppath = ppath.replace('/homes/rpujari/scratch/', './data/')
+    background_parses_rel.append(ppath)
+
 t1 = datetime.now()
-dembs = get_bert_embs(background_parses, is_parses=False, batch_size=100, max_sent_len=150)
-with open(fpath + 'background_doc_tensors.pkl', 'wb') as outfile:
-    pickle.dump(dembs, outfile)
+
+if not os.path.exists(fpath + 'background_doc_tensors.pkl'):
+    dembs = get_bert_embs(background_parses_rel, is_parses=False, batch_size=100, max_sent_len=150)
+    with open(fpath + 'background_doc_tensors.pkl', 'wb') as outfile:
+        pickle.dump(dembs, outfile)
+
 t2 = datetime.now()
 print('Background embeddings computed. Time taken: ', t2 - t1)
 
+
+# # Statement embedding computation
+
+with open(fpath + 'formatted_statement_data.pkl', 'rb') as infile:
+    formatted_statement_data = pickle.load(infile)
+with open(fpath + 'stat_ent_mentions.pkl', 'rb') as infile:
+    stat_ppaths, p_eset, p_sref_dict = pickle.load(infile)
+
+stat_ppaths_rel = []
+for ppath in stat_ppaths:
+    ppath = ppath.replace('/homes/rpujari/scratch/', './data/')
+    stat_ppaths_rel.append(ppath)
+
+print(stat_ppaths_rel[0])
+
+t1 = datetime.now()
+
+if not os.path.exists(fpath + 'stat_doc_tensors.pkl'):
+    dembs = get_bert_embs(stat_ppaths_rel, is_parses=False, batch_size=20, max_sent_len=100)
+    with open(fpath + 'stat_doc_tensors.pkl', 'wb') as outfile:
+        pickle.dump(dembs, outfile)
+
+if not os.path.exists(fpath + 'stat_doc_tensors_poprem.pkl'):
+    stat_popular_entities = [get_popular_entity(p_sref_dict[i], p_eset) for i in range(len(stat_ppaths))]
+    dembs = get_bert_embs(stat_ppaths_rel, is_parses=False, batch_size=20, max_sent_len=100, popular_entities=stat_popular_entities)
+    with open(fpath + 'stat_doc_tensors_poprem.pkl', 'wb') as outfile:
+        pickle.dump((dembs, stat_popular_entities), outfile)
+
+t2 = datetime.now()
+print('Statement embeddings computed. Time taken: ', t2 - t1)
 
 
 

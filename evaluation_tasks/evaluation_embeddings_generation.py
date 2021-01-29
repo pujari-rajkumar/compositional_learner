@@ -28,7 +28,8 @@ import torch.optim as optim
 
 # In[3]:
 
-
+import sys
+sys.path.append('./')
 from compositional_learner.encoder import Encoder
 from compositional_learner.composer import Composer
 

@@ -52,6 +52,11 @@ with open(fpath + 'quote_ent_mentions.pkl', 'rb') as infile:
 with open(fpath + 'quote_doc_tensors.pkl', 'rb') as infile:
     quote_doc_tensors = pickle.load(infile)
 
+quote_ppaths_rel = []
+for ppath in quote_ppaths:
+    ppath = ppath.replace('/homes/rpujari/scratch/', './data/')
+    quote_ppaths_rel.append(ppath)
+
 # In[6]:
 
 
@@ -61,6 +66,12 @@ with open(fpath + 'stat_ent_mentions.pkl', 'rb') as infile:
     stat_ppaths, p_eset, p_sref_dict = pickle.load(infile)
 with open(fpath + 'stat_doc_tensors.pkl', 'rb') as infile:
     stat_doc_tensors = pickle.load(infile)
+
+stat_ppaths_rel = []
+for ppath in stat_ppaths:
+    ppath = ppath.replace('/homes/rpujari/scratch/', './data/')
+    stat_ppaths_rel.append(ppath)
+
 
 # In[7]:
 
@@ -72,6 +83,11 @@ with open(fpath + 'news_ent_mentions.pkl', 'rb') as infile:
 with open(fpath + 'news_doc_tensors.pkl', 'rb') as infile:
     news_doc_tensors = pickle.load(infile)
 
+news_ppaths_rel = []
+for ppath in news_ppaths:
+    ppath = ppath.replace('/homes/rpujari/scratch/', './data/')
+    news_ppaths_rel.append(ppath)
+
 
 # In[8]:
 
@@ -81,6 +97,10 @@ with open(fpath + 'wiki_ent_mentions.pkl', 'rb') as infile:
 with open(fpath + 'wiki_doc_tensors.pkl', 'rb') as infile:
     wiki_doc_tensors = pickle.load(infile)
 
+wiki_ppaths_rel = []
+for ppath in wiki_ppaths:
+    ppath = ppath.replace('/homes/rpujari/scratch/', './data/')
+    wiki_ppaths_rel.append(ppath)
 
 # In[10]:
 
@@ -89,6 +109,11 @@ with open(fpath + 'background_ent_mentions.pkl', 'rb') as infile:
     background_parses, bg_eset, bg_sref_dict = pickle.load(infile)
 with open(fpath + 'background_doc_tensors.pkl', 'rb') as infile:
     background_doc_tensors = pickle.load(infile)
+
+background_parses_rel = []
+for ppath in background_parses:
+    ppath = ppath.replace('/homes/rpujari/scratch/', './data/')
+    background_parses_rel.append(ppath)
 
 # In[11]:
 
@@ -181,8 +206,8 @@ def get_statements(entity, topics, events):
                         for statement in edata[topic][event]:
                             sid = statement['statement_id']
                             spath = ppath + topic + '/statement_' + str(sid) + '.parse'
-                            if spath in stat_ppaths:
-                                sidx = stat_ppaths.index(spath)
+                            if spath in stat_ppaths_rel and os.path.exists(ppath):
+                                sidx = stat_ppaths_rel.index(spath)
                                 sparse = json.load(open(spath, 'r'))
                                 ment_dict = p_sref_dict[sidx]
                                 ret_tensor = stat_doc_tensors[sidx]
@@ -217,8 +242,8 @@ def get_news(topic, events):
                 ret_embs[topic][event] = []
                 for article in ndata[event]:
                     ppath = apath + topic + '/' + article['id'] + '.parse'
-                    if ppath in news_ppaths:
-                        nidx = news_ppaths.index(ppath)
+                    if ppath in news_ppaths_rel and os.path.exists(ppath):
+                        nidx = news_ppaths_rel.index(ppath)
                         nparse = json.load(open(ppath, 'r'))
                         ment_dict = n_sref_dict[nidx]
                         ret_tensor = news_doc_tensors[nidx]
@@ -240,11 +265,11 @@ def get_quotes(entity, topics):
     qpath = './data/on_the_issues/quote_texts/'
     for topic in topics:
         ppath = qpath + topic + '/' + entity.replace(' ', '_') + '.parse'
-        if ppath in quote_ppaths:
+        if ppath in quote_ppaths_rel and os.path.exists(ppath):
             ret_docs[topic] = []
             ret_ents[topic] = []
             ret_embs[topic] = []
-            pidx = quote_ppaths.index(ppath)
+            pidx = quote_ppaths_rel.index(ppath)
             qparse = json.load(open(ppath, 'r'))
             ment_dict = q_sref_dict[pidx]
             ret_tensor = quote_doc_tensors[pidx]
@@ -264,9 +289,9 @@ def get_wiki(entity):
     ret_docs = []
     ret_ents = []
     ret_embs = []
-    if ppath in wiki_ppaths:
+    if ppath in wiki_ppaths_rel:
         wparse = json.load(open(ppath))
-        pidx = wiki_ppaths.index(ppath)
+        pidx = wiki_ppaths_rel.index(ppath)
         ment_dict = w_sref_dict[pidx]
         ret_tensor = wiki_doc_tensors[pidx]
         ret_text, ret_ent = get_formatted_data(wparse, ment_dict)
@@ -287,7 +312,7 @@ def get_description(topic):
     ret_embs = []
     if os.path.exists(dpath):
         dparse = json.load(open(dpath, 'r'))
-        didx = background_parses.index(dpath)
+        didx = background_parses_rel.index(dpath)
         ment_dict = bg_sref_dict[didx]
         ret_tensor = background_doc_tensors[didx]
         ret_text, ret_ent = get_formatted_data(dparse, ment_dict)

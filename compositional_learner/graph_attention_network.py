@@ -1,6 +1,9 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
+import sys
+sys.path.append('./')
 from compositional_learner.transformer.Layers import EncoderLayer
 
 __author__ = "Rajkumar Pujari"

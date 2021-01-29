@@ -18,7 +18,8 @@ import json
 
 # In[2]:
 
-
+import sys
+sys.path.append('./')
 import utils
 from query_handling import data_splitting_utils
 from query_handling import graph_generation

@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
+import sys
+sys.path.append('./')
 from compositional_learner.graph_attention_network import GraphAttentionNetwork
 
 

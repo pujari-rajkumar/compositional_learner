@@ -25,6 +25,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
+import sys
+sys.path.append('./')
 from query_handling import data_splitting_utils
 from query_handling import graph_generation
 
@@ -818,8 +820,8 @@ def batch_to_tensors(batch_x, batch_y):
     #For each example in the batch
     for i, ex in enumerate(batch_x):
         g_docs, g_node_dids, graph_amtx, src_idx, dest_idx = ex
-        #Compute doc embeddings by mean-pooling sentence embeddings (can avoid if you have larger computational power/more time)
-        g_doc_tensors = [torch.mean(torch.tensor(doc), dim=0) for doc in g_docs]
+        #Compute doc embeddings by sum-pooling sentence embeddings (can avoid if you have larger computational power/more time)
+        g_doc_tensors = [torch.sum(torch.tensor(doc), dim=0) for doc in g_docs]
         
         #For every node in the current graph
         for j, node_dids in enumerate(g_node_dids):
