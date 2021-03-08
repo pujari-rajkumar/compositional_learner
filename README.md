@@ -1,6 +1,6 @@
 This is the code repository for the paper, Understanding Politics via Contextualized Discourse Processing: https://arxiv.org/abs/2012.15784
 
-The repository is only partially full yet. The first version will be ready by 02/24/2021. Sorry for the delay.
+The repository is only partially full yet. The first version will be ready by 04/01/2021. Sorry for the delay.
 
 Download the required data from here: https://drive.google.com/file/d/1Y-BTF34tnS8FhE0dGViY9MYN7nNrb50N/view?usp=sharing
 
