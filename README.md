@@ -1,7 +1,5 @@
 This is the code repository for the paper, Understanding Politics via Contextualized Discourse Processing: https://arxiv.org/abs/2012.15784
 
-The repository is only partially full yet. The first version will be ready by 04/01/2021. Sorry for the delay.
-
 Download the required data from here: https://drive.google.com/file/d/1Y-BTF34tnS8FhE0dGViY9MYN7nNrb50N/view?usp=sharing
 
 Extract the zipped archive and place data/ folder in the main directory alongside compositional_reader/, data_processing/ etc,. Make sure that there isn't a nested folder named data/ inside the data/ folder after extraction. Folders inside data/ should be composite_learner_data/, evaluation_data/ and so on.
