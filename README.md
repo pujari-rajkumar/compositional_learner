@@ -29,7 +29,7 @@ To train the compositional reader model on learning tasks, you first need to run
         python learning_tasks/authorship_prediction_model.py
         python learning_tasks/mentioned_entity_prediction_model.py
 	
-Upon running the two commands sequentially, the trained_models will be saved in compitional_learner/data/composite_learner_data/saved_parameters/ folder. You may use the saved paramters to initialize the parameters for further tasks. Alternatively, you may use the parameters provided in the data download link above for inference.
+Upon running the two commands sequentially, you should be able to see the training progress in compositional_learner/data/composite_learner_data/training_logs/ folder. Trained_models will be saved in compitional_learner/data/composite_learner_data/saved_parameters/ folder. You may use the saved paramters to initialize the parameters for further tasks. Alternatively, you may use the parameters provided in the data download link above for inference.
 
 
 
