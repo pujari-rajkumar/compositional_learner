@@ -24,12 +24,12 @@ To pre-process data for learning tasks:
 P.S: Don't run them in parallel as the later steps require the output of the earlier steps. Data pre-processing takes a long time (~5 hours)
 
 
-To train the compositional reader model on learning tasks run:
+To train the compositional reader model on learning tasks, you first need to run the data pre-processing scripts. They will create query_dicts-\*.pkl files in compostional_learner/data/composite_learner_data/data_examples/ folder. Then, you need to run:
 
         python learning_tasks/authorship_prediction_model.py
         python learning_tasks/mentioned_entity_prediction_model.py
 	
-Upon running the two commands sequentially, the trained_models will be saved in ./data/composite_learner_data/saved_parameters/ folder. You may use the saved paramters to initialize the parameters for further tasks. Alternatively, you may use the parameters provided in the data download link above for inference.
+Upon running the two commands sequentially, the trained_models will be saved in compitional_learner/data/composite_learner_data/saved_parameters/ folder. You may use the saved paramters to initialize the parameters for further tasks. Alternatively, you may use the parameters provided in the data download link above for inference.
 
 
 
