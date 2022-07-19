@@ -2,7 +2,7 @@ This is the code repository for the paper, Understanding Politics via Contextual
 
 Download the required data from here: https://drive.google.com/file/d/1Y-BTF34tnS8FhE0dGViY9MYN7nNrb50N/view?usp=sharing
 
-Extract the zipped archive and place data/ folder in the main directory alongside compositional_reader/, data_processing/ etc,. Make sure that there isn't a nested folder named data/ inside the data/ folder after extraction. Folders inside data/ should be composite_learner_data/, evaluation_data/ and so on.
+Extract the zipped archive and place data/ folder inside the composite_learner/ folder and alongside compositional_reader/, data_processing/ etc,. Make sure that there isn't a nested folder named data/ inside the data/ folder after extraction. Folders inside data/ should be composite_learner_data/, evaluation_data/ and so on.
 
 Follow the steps sequentially to reproduce results from the paper. This repository consists of scripts related to data collection, data processing, learnings tasks and evaluation tasks. If you are only interested in reproducing evaluation results, you don't need to train the entire model again. Trained model parameters are provided in the downloadable data link. Skip forward to evaluation tasks section below.
 
