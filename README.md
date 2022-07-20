@@ -1,5 +1,9 @@
+<h3>Overview</h3>
+
 This is the code repository for the paper, Understanding Politics via Contextualized Discourse Processing: <tt> https://rajkumar-pujari.com/understanding_politics.html </tt>
 
+
+<h4>Data Download</h4>
 Download the required data from here: <tt> https://drive.google.com/file/d/1Y-BTF34tnS8FhE0dGViY9MYN7nNrb50N/view?usp=sharing </tt>
 
 Extract the zipped archive and place <tt>data/</tt> folder inside the <tt>compositional_learner/</tt> folder and alongside <tt>compositional_reader/</tt>, <tt>data_processing/</tt> etc,. Make sure that there isn't a nested folder named <tt>data/</tt> inside the <tt>data/</tt> folder after extraction. Folders inside <tt>data/</tt> should be <tt>composite_learner_data/</tt>, <tt>evaluation_data/</tt> and so on.
