@@ -26,9 +26,9 @@ To pre-process data for learning tasks:
 2. Extract and place the contents in the main directory in a folder named staford-corenlp/
 3. Run the following commands in this order:
 
-        python data_processing/text_processing.py
-        python data_processing/document_bert_embedding_computation.py
-        python data_processing/query_dict_generation.py
+                                    python data_processing/text_processing.py
+                                    python data_processing/document_bert_embedding_computation.py
+                                    python data_processing/query_dict_generation.py
 
 P.S: Don't run them in parallel as the later steps require the output of the earlier steps. Data pre-processing takes a long time (~5 hours)
 
@@ -36,8 +36,8 @@ P.S: Don't run them in parallel as the later steps require the output of the ear
 <h3>Learning Tasks</h3>
 To train the compositional reader model on learning tasks, you first need to run the data pre-processing scripts. They will create <tt>query_dicts-\*.pkl</tt> files in <tt>compostional_learner/data/composite_learner_data/data_examples/</tt> folder. Then, you need to run:
 
-        python learning_tasks/authorship_prediction_model.py
-        python learning_tasks/mentioned_entity_prediction_model.py
+                                    python learning_tasks/authorship_prediction_model.py
+                                    python learning_tasks/mentioned_entity_prediction_model.py
 
 Upon running the two commands sequentially, you should be able to see the training progress in <tt>compositional_learner/data/composite_learner_data/training_logs/</tt> folder. Trained_models will be saved in <tt>compitional_learner/data/composite_learner_data/saved_parameters/</tt> folder. You may use the saved paramters to initialize the parameters for further tasks. Alternatively, you may use the parameters provided in the data download link above for inference.
 
