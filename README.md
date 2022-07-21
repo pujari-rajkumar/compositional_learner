@@ -10,9 +10,8 @@ Extract the zipped archive and place <tt>data/</tt> folder inside the <tt>compos
 
 
 <h3>Experiments</h3>
-Follow the steps sequentially to reproduce results from the paper. This repository consists of scripts related to data collection, data processing, learnings tasks and evaluation tasks. If you are only interested in reproducing evaluation results, you don't need to train the entire model again. Trained model parameters are provided in the downloadable data link. Skip forward to evaluation tasks section below.
-
-If you are interested in training compositional reader model on learning tasks as described in the paper, you don't need to run data collection scripts. Data required to train the model, as described in the paper, is provided in the downloadable data link. Skip forward to the data pre-processing section below.
+    Follow the steps sequentially to reproduce results from the paper. This repository consists of scripts related to data collection, data processing, learnings tasks and evaluation tasks. If you are only interested in reproducing evaluation results, you don't need to train the entire model again. Trained model parameters are provided in the downloadable data link. Skip forward to evaluation tasks section below.
+    If you are interested in training compositional reader model on learning tasks as described in the paper, you don't need to run data collection scripts. Data required to train the model, as described in the paper, is provided in the downloadable data link. Skip forward to the data pre-processing section below.
 
 
 <h3>Data Collection</h3>
