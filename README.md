@@ -30,7 +30,7 @@ To pre-process data for learning tasks:
                                     python data_processing/document_bert_embedding_computation.py
                                     python data_processing/query_dict_generation.py
 
-P.S: Don't run them in parallel as the later steps require the output of the earlier steps. Data pre-processing takes a long time (~5 hours)
+P.S: Don't run them in parallel as the later steps require the output of the earlier steps. Data pre-processing takes a long time (~5 hours on a machine with 256 cores and 356 GB RAM)
 
 
 <h3>Learning Tasks</h3>
