@@ -21,9 +21,12 @@ TO DO
 
 <h3>Data Processing</h3>
 To pre-process data for learning tasks:
-1. Download staford-corenlp from here: https://stanfordnlp.github.io/corenlp-docs-dev/download.html
-2. Extract and place the contents in the main directory in a folder named staford-corenlp/
-3. Run the following commands in this order:
+
+	1. Download staford-corenlp from here: https://stanfordnlp.github.io/corenlp-docs-dev/download.html
+
+	2. Extract and place the contents in the main directory in a folder named staford-corenlp/
+
+	3. Run the following commands in this order:
 
                                     python data_processing/text_processing.py
                                     python data_processing/document_bert_embedding_computation.py
@@ -38,7 +41,7 @@ To train the compositional reader model on learning tasks, you first need to run
                                     python learning_tasks/authorship_prediction_model.py
                                     python learning_tasks/mentioned_entity_prediction_model.py
 
-Upon running the two commands sequentially, you should be able to see the training progress in <tt>compositional_learner/data/composite_learner_data/training_logs/</tt> folder. Trained_models will be saved in <tt>compitional_learner/data/composite_learner_data/saved_parameters/</tt> folder. You may use the saved paramters to initialize the parameters for further tasks. Alternatively, you may use the parameters provided in the data download link above for inference.
+Upon running the two commands sequentially, you should be able to see the training progress in <tt>compositional_learner/data/composite_learner_data/training_logs/</tt> folder. Trained_models will be saved in <tt>compositional_learner/data/composite_learner_data/saved_parameters/</tt> folder. You may use the saved paramters to initialize the parameters for further tasks. Alternatively, you may use the parameters provided in the data download link above for inference.
 
 
 <h3>Evaluation Tasks</h3>
