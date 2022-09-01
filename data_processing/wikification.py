@@ -334,7 +334,7 @@ def call_wikifier(text, lang="en", threshold=0.6):
     # Prepare the URL.
     data = urllib.parse.urlencode([
         ("text", text), ("lang", lang),
-        ("userKey", "mguyqmynlwpjmatrfosisvwreburzg"),
+        ("userKey", wikifier_api_key),
 #         ("pageRankSqThreshold", "%g" % threshold), ("applyPageRankSqThreshold", "true"),
 #         ("nTopDfValuesToIgnore", "200"), ("nWordsToIgnoreFromList", "200"),
 #         ("wikiDataClasses", "true"), ("wikiDataClassIds", "false"),
