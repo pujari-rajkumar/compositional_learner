@@ -6,3 +6,5 @@ numpy
 pickle
 csv
 random
+transformers==4.2.2
+tokenizers==0.9.4
