@@ -75,12 +75,12 @@ def concat_doc_tensors(d_tensors):
 def create_bert_emb(all_sents, tok_pooling='mean', get_cls_emb=False):
     if len(all_sents) > 0:
         with torch.cuda.device(0):
-            all_toks = emb_tokenizer.batch_encode_plus(all_sents, padding='longest',\
+            all_toks = tokenizer.batch_encode_plus(all_sents, padding='longest',\
                                                    add_special_tokens=True)
             tok_tensor = torch.tensor(all_toks['input_ids']).to('cuda')
             tok_tensor = tok_tensor[:, :512]
             with torch.no_grad():
-                model_out = emb_model(tok_tensor)
+                model_out = model(tok_tensor)
                 all_doc_tensor = model_out[0]
                 if get_cls_emb:
                     all_doc_tensor = model_out[1]
