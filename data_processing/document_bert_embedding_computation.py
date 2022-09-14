@@ -126,7 +126,7 @@ def get_bert_embs(ppaths, is_parses=True, batch_size=100, max_sent_len=150, popu
         else:
             doc_text = get_doc_text(ppath, is_path=False)
         doc_lens.append(len(doc_text))
-        doc_text = [sent.split()[:max_sent_len] for sent in doc_text]
+        doc_text = [' '.join(sent.split()[:max_sent_len]) for sent in doc_text]
         if popular_entities and popular_entities[i]:
             doc_text = remove_entity(doc_text, popular_entities[i])
         all_sents += doc_text
