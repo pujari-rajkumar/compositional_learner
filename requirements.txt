@@ -1,4 +1,4 @@
-python3.6+
+python3.10
 torch
 matplotlib
 scikit-learn
